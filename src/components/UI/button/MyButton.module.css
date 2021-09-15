@@ -1,6 +1,10 @@
 .myBtn {
-  padding: 5px 15px;
-  background:coral;
+  padding: 10px 15px;
+  background: rgb(141, 170, 224);
   font-size: 14px;
+  font-weight: bold;
   cursor: pointer;
+  border: none;
+  border-radius: 50px;
+  outline:rgb(141, 170, 224)
 }

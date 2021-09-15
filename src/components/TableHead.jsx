@@ -1,17 +1,16 @@
-import React from 'react'
-import '../styles/App.css'
+import React from "react";
+import "../styles/App.css";
 
-const TableHead = ({tableHeader}) => {
-
+const TableHead = ({ tableHeader }) => {
   return (
-        <div className="header">
+    <div className="header">
       <div className="cell">
         <strong>
-        {tableHeader.id}. {tableHeader.name}
+          {tableHeader.id}. {tableHeader.field}
         </strong>
       </div>
     </div>
   );
-}
+};
 
-export default TableHead
+export default TableHead;
