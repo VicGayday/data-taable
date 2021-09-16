@@ -1,33 +1,34 @@
-import React, {useState, useMemo} from 'react'
+import React, {useState, useMemo, useEffect} from 'react'
+import axios from 'axios'
 import './styles/App.css'
 import Table from './components/Table'
-// import MyButton from './components/UI/button/MyButton.jsx'
-import MyInput from './components/UI/input/MyInput.jsx'
 import InputForm from './components/InputForm'
-import MySelect from './components/UI/select/MySelect';
+import SortCells from './components/SortCells';
 
-import source from './cars.json'
+
+// import source from './cars.json'
 
 function App() {
 
-  const dataset = source.map(it => ({
-    id: it.id,
-    date: it.date,
-    title: it.title,
-    quantity: it.quantity,
-    distance: it.distance
-  }))
+  // const dataset = source.map(it => ({
+  //   id: it.id,
+  //   date: it.date,
+  //   title: it.title,
+  //   quantity: it.quantity,
+  //   distance: it.distance
+  // }))
 
-  const [tableCells, setTableCells] = useState(dataset);
+  const [tableCells, setTableCells] = useState([]);
+  const [filter, setFilter] = useState({sort: '', query: ''})
 
-  const [selectedColumn, setSelectedColumn] = useState('')
-  const [searchQuery, setSearchQuery] = useState('')
+  // const [selectedColumn, setSelectedColumn] = useState('')
+  // const [searchQuery, setSearchQuery] = useState('')
 
   const sortedCells = useMemo(() => {
-    return selectedColumn
-      ? [...tableCells].sort((a, b) => a[selectedColumn] >= b[selectedColumn])
+    return filter.sort
+      ? [...tableCells].sort((a, b) => a[filter.sort] >= b[filter.sort])
       : tableCells;
-  }, [selectedColumn, tableCells])
+  }, [filter.sort, tableCells])
 
   // const sortedAndSearchedCells = useMemo(() => {
   //   return sortedCells.filter(tableCell => tableCell.title.includes(searchQuery))
@@ -38,9 +39,20 @@ function App() {
     setTableCells([...tableCells, newCell])
   }
 
-  const sortColumns = (column) => {
-    setSelectedColumn(column)
+  async function getData() {
+    const response = await axios(
+      "https://my.api.mockaroo.com/cars.json?key=d8c66fd0"
+    );
+    setTableCells(response.data)
   }
+
+  useEffect(() => {
+    getData()
+  }, [])
+
+  // const sortColumns = (column) => {
+  //   setSelectedColumn(column)
+  // }
 
   // const more = searchQuery > selectedColumn
   // const less = searchQuery < selectedColumn
@@ -49,34 +61,7 @@ function App() {
   return (
     <div className="App">
       <InputForm create={createNewCell} />
-      <div>
-        <MyInput
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-          placeholder="Сортировать по"
-        />
-        <MySelect
-          value={selectedColumn}
-          onChange={sortColumns}
-          defaultValue="Выбор колонки"
-          options={[
-            { value: "title", name: "Название" },
-            { value: "quantity", name: "Количество" },
-            { value: "distance", name: "Расстояние" },
-          ]}
-        />
-        <MySelect
-          value={selectedColumn} //searchQuery
-          onChange={sortColumns}
-          defaultValue="Выбор условия"
-          options={[
-            { value: "title", name: "Равно" },
-            { value: "quantity", name: "Содержит" },
-            { value: "distance", name: "Больше" },
-            { value: "less", name: "Меньше" },
-          ]}
-        />
-      </div>
+      <SortCells filter={filter} setFilter={setFilter}/>
       <Table tableCells={sortedCells} />
     </div>
   );
