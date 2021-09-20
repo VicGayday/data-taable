@@ -18,7 +18,6 @@ const InputForm = ({create}) => {
       ...newCells, id: Date.now()
     }
     create(newCell)
-    // setTableCells([...tableCells, { ...newCells, id: Date.now() }]);
     setNewCells({ date: "", title: "", quantity: "", distance: "" });
   };
 

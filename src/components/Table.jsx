@@ -1,7 +1,7 @@
 import React from "react";
 import '../styles/App.css';
 
-const Table = ({tableCells}) => {
+const Table = ({ tableCells }) => {
 
   return (
     <div className="wrapper">
@@ -22,7 +22,7 @@ const Table = ({tableCells}) => {
               <div className="box">{it.quantity}</div>
               <div className="box">{it.distance}</div>
             </div>
-          );
+          )
         })}
       </div>
     </div>

@@ -1,25 +1,27 @@
 import React from 'react'
 import '../styles/App.css'
 
-const Pagination = ({cellsPerPage, totalCells, currentPage, setCurrentPage}) => {
+const Pagination = ({ cellsPerPage, totalCells, currentPage, setCurrentPage }) => {
 
-  const pageNumbers = []
+  const pageNumbers = new Array(Math.ceil(totalCells / cellsPerPage))
+    .fill(null).map((it, index) => {
+      return index + 1
+    })
 
-  for (let i =1; i<= Math.ceil(totalCells / cellsPerPage); i+=1) {
-    pageNumbers.push(i)
-  }
+  if (currentPage > Math.ceil(totalCells / cellsPerPage)) {
+      setCurrentPage(1)}
 
-  return (
+    return (
     <div className="pagination__wrap">
       {pageNumbers.map((it) => (
-          <span
-            className={currentPage === it ? "pagination page__current" : "pagination"}
-            key={it}
-            onClick={() => setCurrentPage(it)}
-            >
-            {it}
-            </span>
-        ))}
+        <span
+          className={currentPage === it ? "pagination page__current" : "pagination"}
+          key={it}
+          onClick={() => setCurrentPage(it)}
+        >
+          {it}
+        </span>
+      ))}
     </div>
   );
 }
